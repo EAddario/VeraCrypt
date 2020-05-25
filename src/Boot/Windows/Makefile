@@ -12,18 +12,18 @@
 PROJ = BootLoader
 .SILENT:
 
-!ifndef MSVC16_ROOT
-!error Environment variable MSVC16_ROOT must point to the installation directory of MS Visual C++ 1.5
+!ifndef MSVC_ROOT
+!error Environment variable MSVC_ROOT must point to the installation directory of MS Visual C++ 1.5
 !endif
 
 ENVPATH = $(PATH)
 
-CC = $(MSVC16_ROOT)\bin\cl.exe
-LD = $(MSVC16_ROOT)\bin\link.exe
+CC = $(MSVC_ROOT)\bin\cl.exe
+LD = $(MSVC_ROOT)\bin\link.exe
 
 AFLAGS = /nologo /omf
 
-CFLAGS = /nologo /W3 /Fc /I "$(MSVC16_ROOT)\Include" /I"..\..\.." /I"..\..\..\Common" /I"..\..\..\Crypto"
+CFLAGS = /nologo /W3 /Fc /I "$(MSVC_ROOT)\Include" /I"..\..\.." /I"..\..\..\Common" /I"..\..\..\Crypto"
 CFLAGS = $(CFLAGS) /D __int8=char /D __int16=int /D __int32=long /D BOOL=char /D FALSE=0 /D TRUE=1
 CFLAGS = $(CFLAGS) /D LITTLE_ENDIAN=1234 /D BYTE_ORDER=1234 /D TC_WINDOWS_BOOT /D TC_MINIMIZE_CODE_SIZE /D TC_NO_COMPILER_INT64
 CFLAGS = $(CFLAGS) /D malloc=malloc_NA
@@ -173,7 +173,7 @@ $(OUTDIR)\BootSector.bin: $(OUTDIR)\BootSector.obj
 
 $(OUTDIR)\Decompressor.com: $(OUTDIR)\BootCrt.obj $(OUTDIR)\Decompressor.obj
 	cd $(OBJDIR)
-	$(LD) $(LFLAGS) BootCrt.obj Decompressor.obj,Decompressor.com,Decompressor.map,$(MSVC16_ROOT)\lib\+slibce,,
+	$(LD) $(LFLAGS) BootCrt.obj Decompressor.obj,Decompressor.com,Decompressor.map,$(MSVC_ROOT)\lib\+slibce,,
 	-dd.exe conv=notrunc,sync bs=512 seek=1 if=Decompressor.com of=$(PROJ).flp 2>NUL:
 	cd ..
 
@@ -185,7 +185,7 @@ $(OUTDIR)\$(PROJ).$(TARGETEXT): $(OBJS)
 
 $(PROJ).$(TARGETEXT)
 $(PROJ).map
-$(MSVC16_ROOT)\lib\+
+$(MSVC_ROOT)\lib\+
 $(LIBS)
 ;
 <<
